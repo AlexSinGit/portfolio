@@ -43,7 +43,8 @@ img {
 
 @keyframes gridDrift {
   from { background-position: 0 0, 0 0; }
-  to { background-position: 60px 60px, 60px 60px; }
+  // Must match the grid background-size for a seamless loop
+  to { background-position: 56px 56px, 56px 56px; }
 }
 
 @keyframes pulseGlow {
