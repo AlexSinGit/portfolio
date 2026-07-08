@@ -1,0 +1,67 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # manual run from the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Private repo with personal data: portfolio.js + images/
+      - name: Checkout private data
+        uses: actions/checkout@v4
+        with:
+          repository: YOUR_GITHUB_USERNAME/portfolio-data
+          token: ${{ secrets.DATA_REPO_TOKEN }}
+          path: .portfolio-data
+
+      - name: Put data in place
+        run: |
+          cp .portfolio-data/portfolio.js data/portfolio.js
+          if [ -d .portfolio-data/images ]; then
+            cp -r .portfolio-data/images/. data/images/
+          fi
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      # The built site is uploaded as an artifact — it never
+      # lands in any branch of this repository
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

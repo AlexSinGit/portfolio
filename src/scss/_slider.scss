@@ -1,0 +1,213 @@
+@use 'variables' as *;
+
+.slider {
+  position: relative;
+  z-index: 2;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: clamp(16px, 3vw, 8px) var(--pad-x);
+  overflow-x: hidden;
+
+  &__viewport {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  &__track {
+    display: flex;
+    transition: transform 0.7s cubic-bezier(0.65, 0, 0.15, 1);
+  }
+}
+
+.slide {
+  min-width: 100%;
+  padding: 0 2px;
+
+  &__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(28px, 4vw, 64px);
+  }
+
+  &__info {
+    flex: 1 1 360px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  &__num {
+    font-family: $font-mono;
+    font-size: clamp(52px, 7vw, 96px);
+    font-weight: 600;
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--line);
+  }
+
+  &__title {
+    font-size: clamp(34px, 4.4vw, 60px);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  &__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  &__tag {
+    font-family: $font-mono;
+    font-size: 11.5px;
+    letter-spacing: 0.05em;
+    padding: 6px 12px;
+    border: 1px solid oklch(0.4 0.02 250 / 0.6);
+    border-radius: 999px;
+    color: oklch(0.82 0.03 250);
+    background: oklch(0.3 0.01 250 / 0.35);
+  }
+
+  &__desc {
+    font-size: clamp(15px, 1.15vw, 17px);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 46ch;
+    text-wrap: pretty;
+  }
+
+  &__link {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 4px;
+    font-family: $font-mono;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    padding: 13px 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--bg);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 14px color-mix(in oklab, var(--accent) 20%, transparent);
+      color: var(--bg);
+    }
+  }
+
+  &__link-arrow {
+    font-size: 15px;
+  }
+
+  &__media {
+    position: relative;
+    flex: 1 1 320px;
+    min-width: 0;
+  }
+
+  &__media-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--accent) 50%, transparent),
+      transparent 55%
+    );
+    pointer-events: none;
+  }
+
+  &__media-frame {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid oklch(0.4 0.02 250 / 0.4);
+    background: var(--surface);
+  }
+
+  // Blurred cover copy of the image behind the contained one:
+  // fills the letterbox space when aspect ratios don't match
+  &__img-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(18px) brightness(0.5);
+    transform: scale(1.12); // hide blurred edges bleeding inward
+  }
+
+  &__img {
+    position: relative; // above the blurred backdrop
+    width: 100%;
+    height: 100%;
+    // Show the whole image without cropping; empty space is
+    // filled by the blurred backdrop
+    object-fit: contain;
+
+    // Opt-in per project via fit: 'cover' in data/portfolio.js
+    &--cover {
+      object-fit: cover;
+    }
+  }
+
+  &__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    background:
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 14px,
+        oklch(0.5 0.02 250 / 0.05) 14px,
+        oklch(0.5 0.02 250 / 0.05) 15px
+      );
+  }
+
+  @media (max-width: $bp-md) {
+    &__inner {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: $bp-sm) {
+    &__info {
+      gap: 16px;
+    }
+
+    &__num {
+      font-size: 44px;
+    }
+
+    &__title {
+      font-size: clamp(28px, 8vw, 34px);
+    }
+
+    &__desc {
+      font-size: 14.5px;
+    }
+
+    &__link {
+      padding: 12px 20px;
+    }
+  }
+}

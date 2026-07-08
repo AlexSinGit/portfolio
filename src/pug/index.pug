@@ -1,0 +1,83 @@
+//- Data (settings, projects) comes from data/portfolio.js
+//- via scripts/render.js and is baked into the final HTML at build time.
+
+- const pad = (n) => String(n).padStart(2, '0');
+
+//- Project slide; isClone — helper copy for seamless looping
+mixin slide(p, i, isClone)
+  article.slide(aria-hidden=isClone ? 'true' : null)
+    .slide__inner
+      .slide__info
+        .slide__num(aria-hidden="true")= pad(i + 1)
+        h2.slide__title= p.title
+        .slide__stack
+          each tech in (p.stack || [])
+            span.slide__tag= tech
+        p.slide__desc= p.desc
+        if p.link
+          a.slide__link(href=p.link target="_blank" rel="noopener" tabindex=isClone ? '-1' : null)
+            | View&nbsp;project
+            span.slide__link-arrow &#8599;
+      .slide__media
+        .slide__media-glow(aria-hidden="true")
+        .slide__media-frame
+          if p.image
+            //- Blurred cover copy of the same image fills the letterbox space
+            if p.fit !== 'cover'
+              img.slide__img-bg(src=p.image alt="" aria-hidden="true" loading="lazy")
+            img.slide__img(class=p.fit === 'cover' ? 'slide__img--cover' : null src=p.image alt=p.title loading="lazy")
+          else
+            .slide__placeholder= settings.placeholderText || 'Drop screenshot'
+
+doctype html
+html(lang="en" style=settings.accent ? `--accent: ${settings.accent}` : null)
+  head
+    meta(charset="utf-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    title Portfolio — #{settings.label || 'Selected Work'}
+    meta(name="description" content="Selected work — portfolio of projects")
+    meta(name="robots" content="noindex, nofollow")
+    link(rel="icon" type="image/svg+xml" href="images/favicon.svg")
+    link(rel="preconnect" href="https://fonts.googleapis.com")
+    link(rel="preconnect" href="https://fonts.gstatic.com" crossorigin)
+    link(href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet")
+    link(rel="stylesheet" href="css/main.css")
+  body
+    .page
+      .page__grid(aria-hidden="true")
+      .page__glow(aria-hidden="true")
+
+      header.header
+        .header__brand
+          span.header__dot(aria-hidden="true")
+          span.header__label= settings.label || 'Selected Work'
+        .header__counter
+          span.header__current.js-current 01
+          span.header__sep &nbsp;&nbsp;/&nbsp;&nbsp;
+          span.header__total= pad(projects.length)
+
+      main.slider
+        .slider__viewport
+          .slider__track.js-track
+            //- Edge clones — for seamless looping
+            if projects.length > 1
+              +slide(projects[projects.length - 1], projects.length - 1, true)
+            each p, i in projects
+              +slide(p, i, false)
+            if projects.length > 1
+              +slide(projects[0], 0, true)
+
+      footer.footer
+        .footer__dots.js-dots(role="tablist" aria-label="Projects")
+          each p, i in projects
+            button.footer__dot(
+              type="button"
+              class=i === 0 ? 'is-active' : null
+              aria-label=`Project ${pad(i + 1)}: ${p.title}`
+              aria-current=i === 0 ? 'true' : 'false'
+            )
+        .footer__nav
+          button.footer__arrow.footer__arrow--prev.js-prev(type="button" aria-label="Previous project") &#8592;
+          button.footer__arrow.footer__arrow--next.js-next(type="button" aria-label="Next project") &#8594;
+
+    script(src="js/app.js")

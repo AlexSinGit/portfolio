@@ -1,0 +1,39 @@
+@use 'variables' as *;
+
+.page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+
+  &__grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.5;
+    background-image:
+      linear-gradient(oklch(0.5 0.02 250 / 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, oklch(0.5 0.02 250 / 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridDrift 18s linear infinite;
+  }
+
+  &__glow {
+    position: absolute;
+    top: -20%;
+    right: -10%;
+    width: 55vw;
+    height: 55vw;
+    z-index: 0;
+    background: radial-gradient(
+      circle,
+      color-mix(in oklab, var(--accent) 10%, transparent),
+      transparent 62%
+    );
+    filter: blur(30px);
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,10 @@
+node_modules/
+dist/
+
+# Personal portfolio data — never committed.
+# Template: data/portfolio.example.js
+data/portfolio.js
+
+# Personal portfolio screenshots — never committed.
+data/images/*
+!data/images/.gitkeep

@@ -1,0 +1,20 @@
+// Fonts
+$font-main: 'Space Grotesk', sans-serif;
+$font-mono: 'JetBrains Mono', monospace;
+
+// Breakpoints
+$bp-md: 900px;
+$bp-sm: 600px;
+
+// Colors (the accent can also be set in data: settings.accent)
+:root {
+  --accent: oklch(0.78 0.16 250);
+  --bg: #0a0b0e;
+  --surface: #111318;
+  --text: oklch(0.96 0.01 250);
+  --text-muted: oklch(0.72 0.02 250);
+  --text-dim: oklch(0.55 0.02 250);
+  --line: oklch(0.4 0.02 250);
+  --line-soft: oklch(0.42 0.02 250 / 0.7);
+  --pad-x: clamp(24px, 5vw, 72px);
+}

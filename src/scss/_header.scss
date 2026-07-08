@@ -1,0 +1,55 @@
+@use 'variables' as *;
+
+.header {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 32px var(--pad-x);
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  &__dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulseGlow 2.4s ease-in-out infinite;
+  }
+
+  &__label {
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  &__counter {
+    font-family: $font-mono;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+  }
+
+  &__current {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  @media (max-width: $bp-sm) {
+    padding-top: 24px;
+
+    &__label {
+      letter-spacing: 0.2em;
+    }
+  }
+}
