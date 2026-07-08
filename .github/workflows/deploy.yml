@@ -25,7 +25,7 @@ jobs:
       - name: Checkout private data
         uses: actions/checkout@v4
         with:
-          repository: YOUR_GITHUB_USERNAME/portfolio-data
+          repository: AlexSinGit/portfolio-data
           token: ${{ secrets.DATA_REPO_TOKEN }}
           path: .portfolio-data
 
